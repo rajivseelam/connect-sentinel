@@ -1,6 +1,6 @@
 {
-    "name": "rjvim/connect-laravel5-name",
-    "description": "Connect - Sentry - OAuth",
+    "name": "rjvim/connect-sentinel",
+    "description": "Connect - Sentinel - OAuth",
     "homepage": "https://github.com/rajivseelam/connect-laravel5-name",
     "license": "MIT",
     "authors": [
