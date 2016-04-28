@@ -9,7 +9,7 @@ use Google_Client;
 class Connect {
 
 
-	protected $sentry;
+	protected $sentinel;
 
 	/**
 	 * Constructor for Connect Library
@@ -17,7 +17,7 @@ class Connect {
 
 	public function __construct()
 	{
-		$this->sentry = \App::make('sentry');
+		$this->sentinel = \App::make('sentinel');
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Connect {
 		$provider->updateOAuthAccount($user,$userData);
 
 		//Then log in a user
-		$this->sentry->login($user);
+		$this->sentinel->login($user);
 
 		if(Config::get('rjvim.connect.ajax'))
 		{
@@ -75,6 +75,7 @@ class Connect {
 	 */
 	public function google($client = 'default',$scope = 'default', $state = 'default')
 	{
+		//To be implemented
 		if($state == 'youtube_access')
 		{
 			$provider = new Providers\Youtube($client,$scope,$state);
@@ -89,7 +90,7 @@ class Connect {
 	}
 
 	/**
-	 * undocumented function
+	 * To be implemented
 	 *
 	 * @return void
 	 * @author 
@@ -103,7 +104,7 @@ class Connect {
 	}
 	
 	/**
-	 * undocumented function
+	 * To be implemented
 	 *
 	 * @return void
 	 * @author 
@@ -118,33 +119,31 @@ class Connect {
 
 
 	/**
-	 * Find user using sentry methods
+	 * Find user using sentinel methods
 	 *
 	 * @return void
 	 * @author 
 	 **/
 	public function findUser($criteria)
 	{
-		try
+		if($criteria['type'] == 'id')
 		{
+			$user = $this->sentinel->findUserById($criteria['value']);
+		}
 
-			if($criteria['type'] == 'id')
-			{
-				$user = $this->sentry->findUserById($criteria['value']);
-			}
+		if($criteria['type'] == 'login')
+		{
+			$user = $this->sentinel->findByCredentials(['login' => $criteria['value']]);
+		}
 
-			if($criteria['type'] == 'login')
-			{
-				$user = $this->sentry->findUserByLogin($criteria['value']);
-			}
-
+		if($user)
+		{
 			$result['found'] = true;
 			$result['user'] = $user;
-
 		}
-		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		else
 		{
-		    $result['found'] = false;
+			$result['found'] = false;
 		}
 
 		return $result;
@@ -164,14 +163,13 @@ class Connect {
 
 		$password = isset($data['password']) ? $data['password'] : str_random(10);
 
-		$user = $this->sentry->createUser(array(
+		$user = $this->sentinel->registerAndActivate(array(
 			        'email'       => $data['email'],
 			        'name'        => $data['name'],
-			        'password'    => $password,
-			        'activated'   => $activate,
+			        'password'    => $password
 			    ));
 
-		if(in_array($data['gender'], ['male','female']))
+		if(in_array($data['gender'], ['male','female', 'others']))
 		{
 			$user->gender = $data['gender'];
 		}

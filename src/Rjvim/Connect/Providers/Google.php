@@ -12,7 +12,7 @@ class Google implements ProviderInterface{
 
 	protected $client;
 	protected $scopes;
-	protected $sentry;
+	protected $sentinel;
 
 	/**
 	 * Constructor for Connect Library
@@ -22,7 +22,7 @@ class Google implements ProviderInterface{
 		$this->scopes = $scope;
 		$this->client = $this->prepareClient($client,$scope,$state);
 
-		$this->sentry = \App::make('sentry');
+		$this->sentinel = \App::make('sentinel');
 	}
 
 	/**
@@ -100,9 +100,9 @@ class Google implements ProviderInterface{
 
 		$result['uid'] = $person->id;
 
-		if($this->sentry->check())
+		if($this->sentinel->check())
 		{
-			$result['email'] = $this->sentry->getUser()->email;
+			$result['email'] = $this->sentinel->getUser()->email;
 		}
 		else
 		{
@@ -131,7 +131,7 @@ class Google implements ProviderInterface{
 	 **/
 	public function authenticate()
 	{
-		return Redirect::to($this->getAuthUrl());
+		return redirect()->to($this->getAuthUrl());
 	}
 
 	/**

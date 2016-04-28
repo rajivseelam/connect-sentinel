@@ -2,28 +2,29 @@
 
 Add to dependencies
 
-    "cartalyst/sentry": "2.1.*",
+	"cartalyst/sentinel": "^2.0",
     "google/apiclient": "1.0.*@beta",
-    "knplabs/github-api": "~1.2",
-    "facebook/php-sdk-v4" : "4.0.*",
-    "league/oauth2-client": "~0.3"
-
 
 Add to providers
 
-	'Rjvim\Connect\ConnectServiceProvider',
+	Rjvim\Connect\ConnectServiceProvider::class,
 
+Add to facades
 
-Make changes to *app/database.php*
+	'Connect'   => Rjvim\Connect\ConnectFacade::class,
 
-Run: `php artisan migrate --package=cartalyst/sentry`
+Run: `php artisan vendor:publish`
 
-Run: `php artisan config:publish cartalyst/sentry`
+Add more columns to users table:
 
-Edit *app/config/packages/cartalyst/sentry/config.php* to
+	$table->string('name')->nullable();
+    $table->text('description')->nullable();
+    $table->enum('gender', ['male', 'female', 'others'])->nullable();
+    $table->date('birthday')->nullable();
+    $table->text('photo')->nullable();
 
-	'model' => 'Rjvim\Connect\Models\User',
+Extend User model with `Rjvim\Connect\Models\User`
 
-Run: `php artisan migrate --package="rjvim/connect"`
-
-Run: `php artisan config:publish rjvim/connect`
+Add routes:
+	
+	Connect::google();

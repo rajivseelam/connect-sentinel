@@ -1,8 +1,7 @@
 <?php namespace Rjvim\Connect\Models;
 
-use Cartalyst\Sentry\Users\Eloquent\User as SentryUserModel;
 
-class User extends SentryUserModel{
+class User extends  \Cartalyst\Sentinel\Users\EloquentUser{
 
 	/**
 	 * The database table used by the model.
