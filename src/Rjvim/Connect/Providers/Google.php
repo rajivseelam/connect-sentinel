@@ -100,14 +100,16 @@ class Google implements ProviderInterface{
 
 		$result['uid'] = $person->id;
 
-		if($this->sentinel->check())
-		{
-			$result['email'] = $this->sentinel->getUser()->email;
-		}
-		else
-		{
-			$result['email'] = $email;
-		}
+		// if($this->sentinel->check())
+		// {
+		// 	$result['email'] = $this->sentinel->getUser()->email;
+		// }
+		// else
+		// {
+		// 	$result['email'] = $email;
+		// }
+
+		$result['email'] = $email;
 			
 		$result['first_name'] = $person->getName()->getGivenName();
 		$result['last_name'] = $person->getName()->getFamilyName();
