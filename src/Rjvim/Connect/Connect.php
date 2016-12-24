@@ -5,6 +5,7 @@ use Request;
 use Response;
 use Redirect;
 use Google_Client;
+use Session;
 
 class Connect {
 
@@ -62,6 +63,12 @@ class Connect {
 			return Response::json('success',200);
 		}
 
+	    if (Session::has('redirect')) {
+	        $referrer = Session::get('redirect');
+	        Session::forget('redirect');
+	        return redirect()->to($referrer);
+	    }
+                
 		return redirect()->intended(Config::get('rjvim.connect.route'));
 	}
 
