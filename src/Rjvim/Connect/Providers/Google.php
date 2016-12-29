@@ -228,6 +228,9 @@ class Google implements ProviderInterface{
 
 		$oauth->save();
 
+		$user->name = $gUserData['name'];
+		$user->save();
+		
 		return true;
 	}
 
