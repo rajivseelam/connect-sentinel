@@ -56,7 +56,7 @@ class Connect {
 		$provider->updateOAuthAccount($user,$userData);
 
 		//Then log in a user
-		$this->sentinel->login($user);
+		$this->sentinel->login($user,true);
 
 		if(Config::get('rjvim.connect.ajax'))
 		{
