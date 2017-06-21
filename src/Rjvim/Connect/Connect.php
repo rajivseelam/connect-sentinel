@@ -166,7 +166,15 @@ class Connect {
 	public function createUser($data,$activate = false)
 	{
 
-		$data['birthday'] = \Carbon::createFromTimestamp(strtotime($data['birthday']));
+		if(isset($data['birthday']))
+		{
+			$data['birthday'] = \Carbon::createFromTimestamp(strtotime($data['birthday']));
+
+			if($data['birthday'])
+			{
+				$user->birthday = $data['birthday'];
+			}
+		}
 
 		$password = isset($data['password']) ? $data['password'] : str_random(10);
 
@@ -179,11 +187,6 @@ class Connect {
 		if(in_array($data['gender'], ['male','female', 'others']))
 		{
 			$user->gender = $data['gender'];
-		}
-
-		if($data['birthday'])
-		{
-			$user->birthday = $data['birthday'];
 		}
 
 		if(isset($data['description']))
